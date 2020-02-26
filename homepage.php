@@ -1,3 +1,7 @@
+<?php
+include("../login/connect.php");
+
+ ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -6,11 +10,17 @@
 </head>
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./homepage.css">    
+    <link rel="stylesheet" href="./homepage.css">
   </head>
+  <style media="screen">
+    .logo a{
+      color : white;
+      text-decoration : none;
+    }
+  </style>
   <body>
     <div class="header">
-      <h2 class = "logo">Homepage</h2>
+      <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
       <input type="checkbox" id ="chk" value="">
       <label for="chk" class="show-menu-btn">
         <i class="fas fa-ellipsis-h"></i>
@@ -18,7 +28,7 @@
 
       <ul class="menu">
         <a href="#">Home</a>
-        <a href="#">About</a>
+        <a href="./post.php">community</a>
         <a href="#">Services</a>
         <a href="#">Works</a>
         <a href="#">Contact</a>
