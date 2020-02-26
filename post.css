@@ -9,11 +9,11 @@
 .a_tag:hover{
   color:white;
 }
-tbody a{
+tbody a, .paging a{
   color : black;
   text-decoration : none;
 }
-tbody a:hover{
+tbody a:hover, .paging a:hover{
   color : #3b527d;
   text-decoration : underline;
 }
@@ -55,6 +55,10 @@ tbody a:hover{
     .noticeboard{
       width : 100%;
     }
+    .th{
+      font-size : 12px;
+      width : 37px;
+    }    
     #title{
       width : 50px;
     }

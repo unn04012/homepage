@@ -13,20 +13,6 @@ include("../login/connect.php");
    </head>
    <body>
      <?php
-     $number = $_GET['number'];
-     $sql = "SELECT * FROM notice WHERE mb_no = $number";
-     $sql_increase_look = "UPDATE notice SET mb_look_number = mb_look_number+1 WHERE mb_no = $number";
-     $sql_image = "SELECT * FROM upload_file WHERE file_no = $number";
-
-     $result_image = mysqli_query($conn, $sql_image);
-     if($result_image){
-       $list_image = mysqli_fetch_assoc($result_image);
-     }else{
-       $list_image['file_path'] = "";
-     }
-
-
-
      $data = "SELECT mb_no FROM notice";
      $result = mysqli_query($conn, $data);
      $num = mysqli_num_rows($result); // 총 데이터 수
@@ -75,8 +61,18 @@ include("../login/connect.php");
        </ul>
      </div>
      <?php if($_GET['number']) {
-       mysqli_query($conn, $sql_increase_look);
+       $number = $_GET['number'];
+       $sql = "SELECT * FROM notice WHERE mb_no = $number";
+       $sql_increase_look = "UPDATE notice SET mb_look_number = mb_look_number+1 WHERE mb_no = $number";
+       $sql_image = "SELECT * FROM upload_file WHERE file_no = $number";
 
+       $result_image = mysqli_query($conn, $sql_image);
+       if($result_image){
+         $list_image = mysqli_fetch_assoc($result_image);
+       }else{
+         $list_image['file_path'] = "";
+       }
+       mysqli_query($conn, $sql_increase_look);
        $result = mysqli_query($conn, $sql);
        $list_number = mysqli_fetch_assoc($result);?>
      <div class="content">
@@ -89,12 +85,12 @@ include("../login/connect.php");
            </thead>
            <tbody>
              <tr>
-               <th>글쓴이</th>
-               <td><?php echo $list_number['mb_id'] ?></td>
-               <th>날짜</th>
-               <td><?php echo $list_number['mb_post_datetime'] ?></td>
-               <th>조회</th>
-               <td><?php echo $list_number['mb_look_number'] ?></td>
+               <th class = "th">글쓴이</th>
+               <td class = "td"><?php echo $list_number['mb_id'] ?></td>
+               <th class = "th">날짜</th>
+               <td class = "td"><?php echo $list_number['mb_post_datetime'] ?></td>
+               <th class = "th">조회</th>
+               <td class = "td"><?php echo $list_number['mb_look_number'] ?></td>
              </tr>
            </tbody>
            <tr>
@@ -139,11 +135,11 @@ include("../login/connect.php");
           <?php } ?>
          </table>
          <div class="paging">
-           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>">이전</a>
+           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">이전</a>
            <?php for($i=$s_page; $i<=$e_page; $i++){?>
-           <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>"><?php echo $i;?></a>
+           <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>&amp;number=<?php echo $list_number['mb_no'] ?>"><?php echo $i;?></a>
            <?php } ?>
-           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page+1 ?>">다음</a>
+           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page+1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">다음</a>
          </div>
        </center>
      </div>
