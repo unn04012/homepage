@@ -1,0 +1,61 @@
+.logo a{
+  color : white;
+  text-decoration : none;
+}
+.a_tag{
+  color : white;
+  text-decoration : none;
+}
+.a_tag:hover{
+  color:white;
+}
+tbody a{
+  color : black;
+  text-decoration : none;
+}
+tbody a:hover{
+  color : #3b527d;
+  text-decoration : underline;
+}
+  .noticeboard{
+    width : 80%;
+    border : 2px solid black;
+    text-align : center;
+    border-collapse : collapse;
+    margin-top : 20px;
+  }
+  .important{
+    background : #3b527d;
+    color : white;
+  }
+  .noticeboard thead{
+    background : #333b4a;
+    color : white;
+  }
+  .noticeboard tr{
+    border-bottom : 1px solid gray;
+  }
+  .noticeboard th{
+    padding : 10px 5px;
+  }
+  .noticeboard td{
+    padding : 10px 5px;
+    font-size : 12px;
+  }
+  .content{
+    margin-bottom : 100px;
+  }
+  .paging{
+    margin-top : 30px;
+  }
+  #title{
+    width : 50%;
+  }
+  @media screen and (max-width :  800px){
+    .noticeboard{
+      width : 100%;
+    }
+    #title{
+      width : 50px;
+    }
+  }
