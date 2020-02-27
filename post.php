@@ -9,7 +9,7 @@ include("../login/connect.php");
      <title></title>
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <link rel="stylesheet" href="./homepage.css">
-     <link rel="stylesheet" href="./post.css">
+     <link rel="stylesheet" href="./post.css">    
    </head>
    <body>
      <?php
@@ -134,6 +134,14 @@ include("../login/connect.php");
             </tbody>
           <?php } ?>
          </table>
+         <div class="write">
+            <a href="write.php">글쓰기</a>
+            <?php if($_SESSION['ss_mb_id']) {?>
+            <a href="./logout.php">로그아웃</a>
+          <?php }else{ ?>
+            <a href="./login.php">로그인</a>
+          <?php } ?>
+         </div>
          <div class="paging">
            <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">이전</a>
            <?php for($i=$s_page; $i<=$e_page; $i++){?>
