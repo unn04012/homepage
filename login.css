@@ -1,0 +1,59 @@
+.logo a{
+  color : white;
+  text-decoration : none;
+}
+.login_form{
+  position : absolute;
+  top : 50%;
+  left : 25%;
+  transform : translate(-50%, -25%);
+}
+
+.login_form input{
+  display : block;
+  padding : 10px 5px;
+  margin-top : 2px;
+  border : 2px solid #34495e;
+}
+.login_form input[type=submit]{
+  background : #34495e;
+  color : #fff;
+  cursor : pointer;
+  transition : 0.7s;
+}
+.login_form input[type=submit]:hover{
+  color : #3498db;
+}
+.image{
+  position : absolute;
+  right : 10%;
+  transform : translateX( -25%);
+}
+.image img{
+  width : 100%;
+  max-width : 400px;
+}
+.write{
+  position : absolute;
+  top : 50%;
+  left : 50%;
+  transform : translate(-50%, -50%);
+  padding : 10px;
+}
+.write tr{
+  margin-top : 5px;
+}
+.write input{
+  padding : 5px 10px;
+}
+@media screen and (max-width :  800px){
+  .image img{
+    display : none;
+  }
+  .content{
+    position : absolute;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%, -50%);
+  }
+}
