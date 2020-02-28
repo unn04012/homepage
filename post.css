@@ -40,7 +40,7 @@ tbody a:hover, .paging a:hover{
   }
   .noticeboard td{
     padding : 10px 5px;
-    font-size : 12px;
+    font-size : 14px;
   }
   .content{
     margin-bottom : 100px;
@@ -58,7 +58,17 @@ tbody a:hover, .paging a:hover{
     color : white;
     background : #34495e;
   }
-
+  .write input{
+    padding : 2px 10px;
+    border : 2px solid #34495e;
+    border-radius : 10px;
+    color : white;
+    background : #34495e;
+    cursor : pointer;
+  }
+  .block{
+    font-weight : bold;
+  }
   #title{
     width : 50%;
   }

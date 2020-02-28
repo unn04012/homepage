@@ -9,7 +9,7 @@ include("../login/connect.php");
      <title></title>
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <link rel="stylesheet" href="./homepage.css">
-     <link rel="stylesheet" href="./post.css">    
+     <link rel="stylesheet" href="./post.css">
    </head>
    <body>
      <?php
@@ -51,8 +51,8 @@ include("../login/connect.php");
 
        <ul class="menu">
          <a href="#">Home</a>
-         <a href="#">community</a>
-         <a href="#">Services</a>
+         <a href="./post.php">community</a>
+         <a href="./user_board.php">Services</a>
          <a href="#">Works</a>
          <a href="#">Contact</a>
          <label for="chk" class="hide-menu-btn">
