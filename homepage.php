@@ -29,7 +29,7 @@ include("../login/connect.php");
       <ul class="menu">
         <a href="#">Home</a>
         <a href="./post.php">community</a>
-        <a href="#">Services</a>
+        <a href="./user_board.php">Services</a>
         <a href="#">Works</a>
         <a href="#">Contact</a>
         <label for="chk" class="hide-menu-btn">
