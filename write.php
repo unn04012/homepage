@@ -11,6 +11,11 @@ include("../login/connect.php");
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <link rel="stylesheet" href="./homepage.css">
      <link rel="stylesheet" href="./login.css">
+     <style media="screen">     
+     .write textarea, .write input[type=text]{
+       margin : 10px 5px;
+     }
+     </style>
    </head>
    <body>
      <div class="header">
