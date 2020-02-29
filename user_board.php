@@ -12,6 +12,19 @@ include("../login/connect.php");
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./homepage.css">
     <link rel="stylesheet" href="./post.css">
+    <style media="screen">
+    .noticeboard td{
+      font-size : 14px;
+    }
+    .write input{
+      padding : 2px 10px;
+      border : 2px solid #34495e;
+      border-radius : 10px;
+      color : white;
+      background : #34495e;
+      cursor : pointer;
+    }
+    </style>
   </head>
   <body>
     <div class="header">
@@ -59,6 +72,17 @@ include("../login/connect.php");
           for($i = 0; $mb = mysqli_fetch_assoc($result) ; $i++){
             $list[$i]= $mb;
           }
+
+          $sql = "SELECT * FROM currentUser";
+          $result = mysqli_query($conn, $sql);
+
+          $list_access = array();
+          for($i=0; $currentUser = mysqli_fetch_assoc($result); $i++){
+            $list_access[$i] = $currentUser;
+          }
+          // for($i=0; $i<count($_SESSION['ss_mb_id']; $i++)){
+          //   echo $_SESSION['ss_mb_id'][];
+          // }
            ?>
           <tbody>
             <?php for($i=0; $i<count($list); $i++){ ?>
@@ -79,7 +103,29 @@ include("../login/connect.php");
               <div class="write">
                 <input type="submit" name="" value="차단여부변경">
               </div>
-        <?php } ?>
+              <h1>접속중인 사용자</h1>
+              <table class = "noticeboard">
+                <thead>
+                  <th>사용자</th>
+                  <th>OS</th>
+                  <th>브라우저</th>
+                  <th>ip</th>
+                </thead>
+                <tbody>
+                    <?php for($i=0; $i<count($list_access); $i++){ ?>
+                  <tr>
+                    <td><?php echo $list_access[$i]['userID'] ?></td>
+                    <td><?php echo $list_access[$i]['OS'] ?></td>
+                    <td><?php echo $list_access[$i]['browser'] ?></td>
+                    <td><?php echo $list_access[$i]['ipaddr'] ?></td>
+                  </tr>
+                <?php } ?>
+                </tbody>
+              </table>
+        <?php }else{
+          echo "<script> alert('관리자만 접근가능합니다');</script>";
+          echo "<script> location.replace('./post.php');</script>";
+        } ?>
            </form>
       </center>
     </div>

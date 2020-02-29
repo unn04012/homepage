@@ -10,6 +10,11 @@ include("../login/connect.php");
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <link rel="stylesheet" href="./homepage.css">
      <link rel="stylesheet" href="./post.css">
+     <style media="screen">
+       .noticeboard td{
+         font-size : 14px;
+       }
+     </style>
    </head>
    <body>
      <?php
@@ -40,7 +45,7 @@ include("../login/connect.php");
        if($row==false){
          break;
        }
-     }
+     }       
       ?>
      <div class="header">
        <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
