@@ -41,6 +41,22 @@
 .show-menu-btn i{
   line-height : 100px;
 }
+
+.logo a{
+  color : white;
+  text-decoration : none;
+}
+.top{
+  position : absolute;
+  display : block;
+  background : #34495e;
+  color : white;
+  right : 50px;
+  margin-bottom : 5px;
+}
+.top a{
+  color : aqua;
+}    
 .menu a:hover,
 .show-menu-btn:hover,
 .hide-menu-btn:hover{
@@ -64,7 +80,7 @@
 .content p{
   text-align : justify;
 }
-@media screen and (max-width :  800px){  
+@media screen and (max-width :  800px){
   .show-menu-btn, .hide-menu-btn{
     display : block;
   }

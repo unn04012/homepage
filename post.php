@@ -46,8 +46,14 @@ include('./multi_login.php');
        if($row==false){
          break;
        }
-     }     
+     }
       ?>
+      <?php if($_SESSION['ss_mb_id']) {?>
+        <div class="top">
+          <?php echo $_SESSION['ss_mb_id'] ?>님 환영합니다
+          <a href="./logout.php">로그아웃</a>
+        </div>
+    <?php } ?>
      <div class="header">
        <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
        <input type="checkbox" id ="chk" value="">
