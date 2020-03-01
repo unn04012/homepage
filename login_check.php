@@ -73,12 +73,15 @@ if($result && ($mb['mb_password'] == $mb_password)){
   if($mb_id ==="admin"){
     $_SESSION['ss_mb_id'] = $mb_id;
     echo "<script> alert('관리자 로그인 성공'); </script>";
+    echo "<script> location.replace('./post.php'); </script>";
+    exit;
   }else if($mb['mb_block'] == 0){
     $sql = "SELECT *  FROM currentUser WHERE userID = '$mb_id'";
     $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_assoc($result);
     if(!$user){
       $_SESSION['ss_mb_id'] = $mb_id;
+      $_SESSION['ss_mb_ip'] = $ipaddr;
       $sql = "INSERT INTO currentUser
                       SET ipaddr = '$ipaddr',
                           date = '$date',
@@ -87,14 +90,26 @@ if($result && ($mb['mb_password'] == $mb_password)){
                           browser = '$browser',
                           userID = '$mb_id'";
       $result = mysqli_query($conn, $sql);
+
+      // echo "<script> location.replace('./post.php'); </script>";
     }else{
-        echo "<script> alert('현재 접속중인 아이디입니다'); </script>";
-        echo "<script> location.replace('./post.php'); </script>";
+      $_SESSION['ss_mb_id'] = $mb_id;
+      $_SESSION['ss_mb_ip'] = $ipaddr;
+      $sql = "UPDATE currentuser SET ipaddr = '$ipaddr' WHERE userID = '$mb_id'";
+      $result = mysqli_query($conn, $sql);
     }
-    echo "<script> alert('로그인 성공'); </script>";
+    // else{
+    //     echo "<script> alert('현재 접속중인 아이디입니다'); </script>";
+    //     // echo "<script> location.replace('./post.php'); </script>";
+    //     exit;
+    // }
+
   }else{
     echo "<script> alert('차단 된 아이디입니다'); </script>";
-  }
+    echo "<script> location.replace('./post.php'); </script>";
+    exit;
+  }  
+  echo "<script> alert('로그인 성공'); </script>";
   echo "<script> location.replace('./post.php'); </script>";
   exit;
 }

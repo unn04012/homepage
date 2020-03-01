@@ -1,5 +1,6 @@
 <?php
 include("../login/connect.php");
+include('./multi_login.php');
  ?>
  <!DOCTYPE html>
  <html lang="en" dir="ltr">
@@ -45,7 +46,7 @@ include("../login/connect.php");
        if($row==false){
          break;
        }
-     }
+     }     
       ?>
      <div class="header">
        <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
@@ -77,7 +78,7 @@ include("../login/connect.php");
         }else{
           setcookie('board_'.$number,TRUE,time()+(60*60*24),'/');
         }
-       }       
+       }
        $sql_image = "SELECT * FROM upload_file WHERE file_no = $number";
 
        $result_image = mysqli_query($conn, $sql_image);
@@ -149,7 +150,7 @@ include("../login/connect.php");
          </table>
          <div class="write">
             <a href="write.php">글쓰기</a>
-            <?php if($_SESSION['ss_mb_id']) {?>
+            <?php if($_SESSION['ss_mb_id']){?>
             <a href="./logout.php">로그아웃</a>
           <?php }else{ ?>
             <a href="./login.php">로그인</a>
