@@ -1,6 +1,6 @@
 <?php
 include("../login/connect.php");
-
+include('./multi_login.php');
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -17,8 +17,25 @@ include("../login/connect.php");
       color : white;
       text-decoration : none;
     }
+    .top{
+      position : absolute;
+      display : block;
+      background : #34495e;
+      color : white;
+      right : 50px;
+      margin-bottom : 5px;
+    }
+    .top a{
+      color : aqua;
+    }    
   </style>
   <body>
+    <?php if($_SESSION['ss_mb_id']) {?>
+      <div class="top">
+        <?php echo $_SESSION['ss_mb_id'] ?>님 환영합니다
+        <a href="./logout.php">로그아웃</a>
+      </div>
+  <?php } ?>
     <div class="header">
       <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
       <input type="checkbox" id ="chk" value="">

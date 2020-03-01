@@ -1,5 +1,6 @@
 <?php
 include("../login/connect.php");
+include('./multi_login.php');
  ?>
  <!DOCTYPE html>
  <html lang="en" dir="ltr">
@@ -11,7 +12,7 @@ include("../login/connect.php");
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <link rel="stylesheet" href="./homepage.css">
      <link rel="stylesheet" href="./login.css">
-     <style media="screen">     
+     <style media="screen">
      .write textarea, .write input[type=text]{
        margin : 10px 5px;
      }
@@ -36,7 +37,7 @@ include("../login/connect.php");
          </label>
        </ul>
      </div>
-     <?php if(!$_SESSION['ss_mb_id']){ ?>
+     <?php if(!$_SESSION['ss_mb_id'] && !$_SESSION['ss_mb_ip']){ ?>
      <div class="content">
        <center>
          <form class="login_form" action="login_check.php" method="post">
