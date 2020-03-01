@@ -45,7 +45,7 @@ include("../login/connect.php");
        if($row==false){
          break;
        }
-     }       
+     }
       ?>
      <div class="header">
        <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
@@ -68,7 +68,16 @@ include("../login/connect.php");
      <?php if($_GET['number']) {
        $number = $_GET['number'];
        $sql = "SELECT * FROM notice WHERE mb_no = $number";
-       $sql_increase_look = "UPDATE notice SET mb_look_number = mb_look_number+1 WHERE mb_no = $number";
+       if(empty($_COOKIE['board_'.$number])){
+        $sql_increase_look = "UPDATE notice SET mb_look_number = mb_look_number+1 WHERE mb_no = $number";
+        $result = mysqli_query($conn, $sql_increase_look);
+        if(empty($result)){
+          echo "<script> alert('조회수 오류가 발생하였습니다'); </script>";
+          echo "<script> history.back(); </script>";
+        }else{
+          setcookie('board_'.$number,TRUE,time()+(60*60*24),'/');
+        }
+       }       
        $sql_image = "SELECT * FROM upload_file WHERE file_no = $number";
 
        $result_image = mysqli_query($conn, $sql_image);
@@ -77,7 +86,6 @@ include("../login/connect.php");
        }else{
          $list_image['file_path'] = "";
        }
-       mysqli_query($conn, $sql_increase_look);
        $result = mysqli_query($conn, $sql);
        $list_number = mysqli_fetch_assoc($result);?>
      <div class="content">
