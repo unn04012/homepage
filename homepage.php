@@ -1,6 +1,7 @@
 <?php
 include("../login/connect.php");
 include('./multi_login.php');
+include('./auto_logout.php');
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -13,21 +14,6 @@ include('./multi_login.php');
     <link rel="stylesheet" href="./homepage.css">
   </head>
   <style media="screen">
-    .logo a{
-      color : white;
-      text-decoration : none;
-    }
-    .top{
-      position : absolute;
-      display : block;
-      background : #34495e;
-      color : white;
-      right : 50px;
-      margin-bottom : 5px;
-    }
-    .top a{
-      color : aqua;
-    }    
   </style>
   <body>
     <?php if($_SESSION['ss_mb_id']) {?>

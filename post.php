@@ -1,6 +1,7 @@
 <?php
 include("../login/connect.php");
 include('./multi_login.php');
+include('./auto_logout.php');
  ?>
  <!DOCTYPE html>
  <html lang="en" dir="ltr">
