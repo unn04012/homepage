@@ -28,35 +28,47 @@ $field_name = 'myfile';
 //관리자 업로드//
 if($mb_id == "admin"){
   $sql = "UPDATE admin_notice
-            SET ad_title='$mb_title',
-                ad_content='$mb_content',
-                ad_datetime='$mb_post_datetime'";
+            SET mb_title='$mb_title',
+                mb_content='$mb_content',
+                mb_datetime='$mb_post_datetime',
+                mb_look_number = '0'";
   $result = mysqli_query($conn, $sql);
-  if($result){
-    echo "<script> alert('성공적으로 업로드'); </script>";
-    echo "<script> location.replace('./post.php'); </script>";
-  }else{
-    echo "<script> alert('업로드 실패'); </script>";
-    echo "<script> history.back(); </script>";
-  }
 }else{
-$sql = "INSERT INTO notice
-                SET mb_id = '$mb_id',
-                    mb_post_datetime = '$mb_post_datetime',
-                    mb_title = '$mb_title',
-                    mb_content = '$mb_content',
-                    mb_look_number = '0'";
-$result = mysqli_query($conn, $sql);
+  if($_GET['mode']=='modify'){
+    $number = $_GET['number'];
+    $sql = " UPDATE notice
+                    SET mb_post_datetime = '$mb_post_datetime',
+                        mb_title = '$mb_title',
+                        mb_content = '$mb_content'
+                    WHERE mb_no = $number";
+    $result = mysqli_query($conn, $sql);
+  }else{
+    $sql = "INSERT INTO notice
+                    SET mb_id = '$mb_id',
+                        mb_post_datetime = '$mb_post_datetime',
+                        mb_title = '$mb_title',
+                        mb_content = '$mb_content',
+                        mb_look_number = '0'";
+    $result = mysqli_query($conn, $sql);
+  }
+}
+if($result){
+  echo "<script> alert('성공적으로 업로드'); </script>";
+  echo "<script> location.replace('./post.php'); </script>";
+}else{
+  echo "<script> alert('업로드 실패'); </script>";
+  echo "<script> history.back(); </script>";
+}
 
-//-- mb_no가져오는 코드
+//-- mb_no가져오는 코드i
 
+
+//------------
+if($_FILES[$field_name]['name']){
   $sql_no = "SELECT mb_no FROM notice WHERE mb_post_datetime = '$mb_post_datetime'";
   $result_no = mysqli_query($conn, $sql_no);
   $list = mysqli_fetch_assoc($result_no);
   $number = $list['mb_no'];
-
-//------------
-if($_FILES[$field_name]['name']){
   if(!is_dir($uploads_dir)){
     if(!mkdir($uploads_dir, 0777)){
       die("업로드 디렉토리 생성에 실패 했습니다");
@@ -88,33 +100,31 @@ if($_FILES[$field_name]['name']){
       echo "파일이 업로드 되지 않았습니다.";
       exit;
   }
+  $sql = "INSERT INTO upload_file
+                  SET file_no = '$number',
+                      file_name = '$name',
+                      file_path = '$upload_file',
+                      file_datetime = '$mb_post_datetime'";
+  $result_file = mysqli_query($conn, $sql);
+
+  if(!$result_file){
+    echo "<script> alert('msyql 업데이트 실패'); </script>";
+    echo "<script> location.replace('./post.php');</script>";
+    exit;
+  }
+  if($result){
+    echo "<script> alert('성공적으로 업로드 되었습니다'); </script>";
+    echo "<script> location.replace('./post.php');</script>";
+    exit;
+  }else{
+    echo "<script> alert('업로드실패'); </script>";
+    echo "<script> location.replace('./write.php');</script>";
+    exit;
+  }
 }
 
-$sql = "INSERT INTO upload_file
-                SET file_no = '$number',
-                    file_name = '$name',
-                    file_path = '$upload_file',
-                    file_datetime = '$mb_post_datetime'";
-$result_file = mysqli_query($conn, $sql);
 
 
-
-if(!$result_file){
-  echo "<script> alert('msyql 업데이트 실패'); </script>";
-  echo "<script> location.replace('./post.php');</script>";
-  exit;
-}
-if($result){
-  echo "<script> alert('성공적으로 업로드 되었습니다'); </script>";
-  echo "<script> location.replace('./post.php');</script>";
-  exit;
-}else{
-  echo "<script> alert('업로드실패'); </script>";
-  echo "<script> location.replace('./write.php');</script>";
-  exit;
-}
-
-}
 
 
  ?>

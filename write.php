@@ -5,17 +5,26 @@ include('./auto_logout.php');
 
 $mb_id = $_SESSION['ss_mb_id'];
 $number = $_GET['number'];
-$sql = "SELECT * FROM notice WHERE mb_id = '$mb_id' and mb_no = '$number'";
-$result = mysqli_query($conn, $sql);
-$mb = mysqli_fetch_assoc($result);
+if($mb_id=="admin"){
+  $sql = "SELECT * FROM admin_notice WHERE mb_id = '$mb_id'";
+  $result = mysqli_query($conn, $sql);
+  $mb = mysqli_fetch_assoc($result);
+}else{
+  $sql = "SELECT * FROM notice WHERE mb_id = '$mb_id' and mb_no = '$number'";
+  $result = mysqli_query($conn, $sql);
+  $mb = mysqli_fetch_assoc($result);
+}
 mysqli_close($conn);
 $title = ' ';
 $content = ' ';
+$mode = 'insert';
+
 if($_GET['mode']=='modify'){
   if($_SESSION['ss_mb_id'] == $mb['mb_id']){
       $mode = "modify";
       $title = $mb['mb_title'];
       $content = $mb['mb_content'];
+      $mode = 'modify';
   }else{
     echo "<script> alert('글쓴이만 수정 가능합니다'); </script>";
     echo "<script> history.back(); </script>";
@@ -76,7 +85,7 @@ if($_GET['mode']=='modify'){
          </div>
        <?php } else{?>
          <div class="write">
-           <form class="" action="./write_update.php" method="post" enctype = "multipart/form-data">
+           <form class="" action="./write_update.php?mode=<?php echo $mode ?>&amp;number=<?php echo $number ?>" method="post" enctype = "multipart/form-data">
              <table>
                <tr>
                  <th class = "center">제목</th>
