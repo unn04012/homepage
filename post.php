@@ -16,6 +16,21 @@ include('./auto_logout.php');
        .noticeboard td{
          font-size : 14px;
        }
+       .modify{
+         text-align : right;
+       }
+       .modify a{
+         padding : 5px 10px;
+         border-radius : 10px;
+         text-decoration : none;
+         color : white;
+         background : #34495e;
+         font-weight : bold;
+       }
+       .modify a:hover{
+         text-decoration : underline;
+         color : white;
+       }
      </style>
    </head>
    <body>
@@ -48,12 +63,21 @@ include('./auto_logout.php');
          break;
        }
      }
+     //관리자 게시판
+     $sql_admin = "SELECT * FROM admin_notice";
+     $result = mysqli_query($conn, $sql_admin);
+     $admin = mysqli_fetch_assoc($result);
       ?>
       <?php if($_SESSION['ss_mb_id']) {?>
         <div class="top">
           <?php echo $_SESSION['ss_mb_id'] ?>님 환영합니다
           <a href="./logout.php">로그아웃</a>
         </div>
+    <?php }else{?>
+      <div class="top">
+        <a href="./login.php">로그인</a>
+        <a href="../login/register.php">회원가입</a>
+      </div>
     <?php } ?>
      <div class="header">
        <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
@@ -63,10 +87,10 @@ include('./auto_logout.php');
        </label>
 
        <ul class="menu">
-         <a href="#">Home</a>
+         <a href="./homepage.php">Home</a>
          <a href="./post.php">community</a>
          <a href="./user_board.php">Services</a>
-         <a href="#">Works</a>
+         <a href="./visitor_statistic.php">Works</a>
          <a href="#">Contact</a>
          <label for="chk" class="hide-menu-btn">
            <i class="fas fa-times"></i>
@@ -95,7 +119,8 @@ include('./auto_logout.php');
          $list_image['file_path'] = "";
        }
        $result = mysqli_query($conn, $sql);
-       $list_number = mysqli_fetch_assoc($result);?>
+       $list_number = mysqli_fetch_assoc($result);
+       ?>
      <div class="content">
        <center>
          <table class = "noticeboard">
@@ -120,6 +145,7 @@ include('./auto_logout.php');
                <?php echo $list_number['mb_content'] ?>
              </div>
                <img src="<?php echo $list_image['file_path'] ?>" alt="" width ="500">
+               <div class="modify"><a href="./write.php?mode=modify&amp;number=<?php echo $list_number['mb_no'] ?>">수정</a></div>
              </td>
            </tr>
          </table>
@@ -138,7 +164,7 @@ include('./auto_logout.php');
            </thead>
             <tr class = "important">
               <td><span>공지</span></td>
-              <td><a href="" class = "a_tag">필독</a></td>
+              <td><a href="#" class = "a_tag"><?php echo $admin['ad_title'] ?></a></td>
               <td>운영자</td>
               <td>2020-02-27</td>
               <td>0</td>
@@ -147,7 +173,7 @@ include('./auto_logout.php');
             <tbody>
               <tr>
                 <td><?php echo $list[$i]['mb_no'] ?></td>
-                <td><a href="<?php $PHP_SELF ?>?number=<?php echo $list[$i]['mb_no'] ?>"><?php echo $list[$i]['mb_title']?></a> </td>
+                <td><a href="<?php $PHP_SELF ?>?number=12&amp;number=<?php echo $list[$i]['mb_no'] ?>"><?php echo $list[$i]['mb_title']?></a> </td>
                 <td><a href="#"><?php echo $list[$i]['mb_id'] ?></a> </td>
                 <td><?php echo date("Y-m-d", strtotime($list[$i]['mb_post_datetime'])) ?></td>
                 <td><?php echo $list[$i]['mb_look_number'] ?></td>
@@ -166,7 +192,7 @@ include('./auto_logout.php');
          <div class="paging">
            <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">이전</a>
            <?php for($i=$s_page; $i<=$e_page; $i++){?>
-           <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>&amp;number=<?php echo $list_number['mb_no'] ?>"><?php echo $i;?></a>
+           <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>&amp;number=<?php echo $list_number['mb_no'] ?>"id ="current_page"><?php echo $i;?></a>
            <?php } ?>
            <a href="<?php $PHP_SELF?>?page=<?php echo $s_page+1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">다음</a>
          </div>

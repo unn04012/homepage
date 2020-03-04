@@ -56,7 +56,11 @@
 }
 .top a{
   color : aqua;
-}    
+  text-decoration : none;
+}
+.top a:hover{
+  text-decoration : unerline;
+}
 .menu a:hover,
 .show-menu-btn:hover,
 .hide-menu-btn:hover{

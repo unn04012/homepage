@@ -21,6 +21,11 @@ include('./auto_logout.php');
         <?php echo $_SESSION['ss_mb_id'] ?>님 환영합니다
         <a href="./logout.php">로그아웃</a>
       </div>
+  <?php }else{?>
+    <div class="top">
+      <a href="./login.php">로그인</a>
+      <a href="../login/register.php">회원가입</a>
+    </div>
   <?php } ?>
     <div class="header">
       <h2 class = "logo"><a href="./homepage.php">Homepage</a></h2>
@@ -30,10 +35,10 @@ include('./auto_logout.php');
       </label>
 
       <ul class="menu">
-        <a href="#">Home</a>
-        <a href="./post.php">community</a>
-        <a href="./user_board.php">Services</a>
-        <a href="#">Works</a>
+         <a href="./homepage.php">Home</a>
+         <a href="./post.php">community</a>
+         <a href="./user_board.php">Services</a>
+         <a href="./visitor_statistic.php">Works</a>
         <a href="#">Contact</a>
         <label for="chk" class="hide-menu-btn">
           <i class="fas fa-times"></i>
