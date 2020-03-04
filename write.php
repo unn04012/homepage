@@ -76,7 +76,7 @@ if($_GET['mode']=='modify'){
          </div>
        <?php } else{?>
          <div class="write">
-           <form class="" action="write_update.php" method="post" enctype = "multipart/form-data">
+           <form class="" action="./write_update.php" method="post" enctype = "multipart/form-data">
              <table>
                <tr>
                  <th class = "center">제목</th>

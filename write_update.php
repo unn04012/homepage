@@ -18,29 +18,28 @@ if(!$mb_title || !$mb_content){
 }
 // if($mb_content)
 
-//관리자 업로드//
-if($mb_id == "admin"){
-  $sql = "INSERT INTO admin_notice (ad_title,ad_content, ad_datetime)
-                  VALUES ('$mb_title', '$mb_content', '$mb_post_datetime')";
-  $result = mysqli_query($conn, $sql);
-  if($result){
-    echo "<script> alert('성공적으로 업로드'); <script>";
-    echo "<script> location.replace('./post.php'); <script>";
-    exit;
-  }else{
-    echo "<script> alert('업로드 실패'); <script>";
-    echo "<script> history.back(); <script>";
-    exit;
-  }
-}
+
 
 $uploads_dir = "../fileupload/fileupload/";
 $allowed_ext = array('jpg','jpeg','png','');
 $field_name = 'myfile';
 
 
-
-
+//관리자 업로드//
+if($mb_id == "admin"){
+  $sql = "UPDATE admin_notice
+            SET ad_title='$mb_title',
+                ad_content='$mb_content',
+                ad_datetime='$mb_post_datetime'";
+  $result = mysqli_query($conn, $sql);
+  if($result){
+    echo "<script> alert('성공적으로 업로드'); </script>";
+    echo "<script> location.replace('./post.php'); </script>";
+  }else{
+    echo "<script> alert('업로드 실패'); </script>";
+    echo "<script> history.back(); </script>";
+  }
+}else{
 $sql = "INSERT INTO notice
                 SET mb_id = '$mb_id',
                     mb_post_datetime = '$mb_post_datetime',
@@ -115,6 +114,7 @@ if($result){
   exit;
 }
 
+}
 
 
  ?>
