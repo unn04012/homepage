@@ -50,7 +50,7 @@ tbody a:hover, .paging a:hover{
     text-align : right;
     margin-top : 20px;
   }
-  .write a, table a{
+  .write a{
     padding : 2px 10px;
     border : 2px solid black;
     border-radius : 10px;

@@ -31,6 +31,14 @@ include('./auto_logout.php');
          text-decoration : underline;
          color : white;
        }
+       .write a{
+           padding : 5px 10px;
+           border-radius : 10px;
+           text-decoration : none;
+           color : white;
+           background : #34495e;
+           font-weight : bold;
+       }
      </style>
    </head>
    <body>
@@ -63,10 +71,11 @@ include('./auto_logout.php');
          break;
        }
      }
+
      //관리자 게시판
-     $sql_admin = "SELECT * FROM admin_notice";
-     $result = mysqli_query($conn, $sql_admin);
-     $admin = mysqli_fetch_assoc($result);
+       $sql = "SELECT * FROM admin_notice";
+       $result = mysqli_query($conn, $sql);
+       $admin = mysqli_fetch_assoc($result);
       ?>
       <?php if($_SESSION['ss_mb_id']) {?>
         <div class="top">
@@ -99,9 +108,12 @@ include('./auto_logout.php');
      </div>
      <?php if($_GET['number']) {
        $number = $_GET['number'];
-       $sql = "SELECT * FROM notice WHERE mb_no = $number";
        if(empty($_COOKIE['board_'.$number])){
-        $sql_increase_look = "UPDATE notice SET mb_look_number = mb_look_number+1 WHERE mb_no = $number";
+         if($number== $admin['mb_no']){
+            $sql_increase_look = "UPDATE admin_notice SET mb_look_number = mb_look_number+1";
+         }else{
+            $sql_increase_look = "UPDATE notice SET mb_look_number = mb_look_number+1 WHERE mb_no = $number";
+         }
         $result = mysqli_query($conn, $sql_increase_look);
         if(empty($result)){
           echo "<script> alert('조회수 오류가 발생하였습니다'); </script>";
@@ -110,26 +122,57 @@ include('./auto_logout.php');
           setcookie('board_'.$number,TRUE,time()+(60*60*24),'/');
         }
        }
-       $sql_image = "SELECT * FROM upload_file WHERE file_no = $number";
 
+       $sql_image = "SELECT * FROM upload_file WHERE file_no = $number";
        $result_image = mysqli_query($conn, $sql_image);
        if($result_image){
          $list_image = mysqli_fetch_assoc($result_image);
        }else{
          $list_image['file_path'] = "";
        }
-       $result = mysqli_query($conn, $sql);
-       $list_number = mysqli_fetch_assoc($result);
+
+
+         // 사용자 게시판 가져오기
+         $sql = "SELECT * FROM notice WHERE mb_no = $number";
+         $result = mysqli_query($conn, $sql);
+         $list_number = mysqli_fetch_assoc($result);
        ?>
      <div class="content">
        <center>
          <table class = "noticeboard">
-           <thead>
-             <tr>
-               <th colspan = "6"><?php echo $list_number['mb_title'] ?></th>
-             </tr>
-           </thead>
-           <tbody>
+            <!-- 관리자 일 경우 -->
+               <?php if($_GET['number']==-1){ ?>
+                 <thead>
+                   <tr>
+                     <th colspan = "6"><?php echo $admin['mb_title'] ?></th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                 <tr>
+                   <th class = "th">글쓴이</th>
+                   <td class = "td">운영자</td>
+                   <th class = "th">날짜</th>
+                   <td class = "td"><?php echo $admin['mb_datetime'] ?></td>
+                   <th class = "th">조회</th>
+                   <td class = "td"><?php echo $admin['mb_look_number'] ?></td>
+                 </tr>
+               </tbody>
+               <tr>
+                 <td colspan = "6">
+                 <div class="inner_content">
+                   <?php echo $admin['mb_content'] ?>
+                 </div>
+                   <img src="<?php echo $list_image['file_path'] ?>" alt="" width ="500">
+                   <div class="modify"><a href="./write.php?mode=modify&amp;number=<?php echo $admin['mb_no'] ?>">수정</a></div>
+                 </td>
+               </tr>
+             <?php }else{ // 사용자 일경우?>
+             <thead>
+               <tr>
+                 <th colspan = "6"><?php echo $list_number['mb_title'] ?></th>
+               </tr>
+             </thead>
+             <tbody>
              <tr>
                <th class = "th">글쓴이</th>
                <td class = "td"><?php echo $list_number['mb_id'] ?></td>
@@ -148,6 +191,7 @@ include('./auto_logout.php');
                <div class="modify"><a href="./write.php?mode=modify&amp;number=<?php echo $list_number['mb_no'] ?>">수정</a></div>
              </td>
            </tr>
+         <?php } ?>
          </table>
        </center>
      </div>
@@ -164,16 +208,16 @@ include('./auto_logout.php');
            </thead>
             <tr class = "important">
               <td><span>공지</span></td>
-              <td><a href="#" class = "a_tag"><?php echo $admin['ad_title'] ?></a></td>
+              <td><a href="<?php $PHP_SELF ?>?number=-1"class = "a_tag"><?php echo $admin['mb_title'] ?></a></td>
               <td>운영자</td>
-              <td>2020-02-27</td>
-              <td>0</td>
+              <td><?php echo date("Y-m-d", strtotime($admin['mb_datetime'])) ?></td>
+              <td><?php echo $admin['mb_look_number'] ?></td>
             </tr>
             <?php for($i =0; $i<count($list); $i++){ ?>
             <tbody>
               <tr>
                 <td><?php echo $list[$i]['mb_no'] ?></td>
-                <td><a href="<?php $PHP_SELF ?>?number=12&amp;number=<?php echo $list[$i]['mb_no'] ?>"><?php echo $list[$i]['mb_title']?></a> </td>
+                <td><a href="<?php $PHP_SELF ?>?number=<?php echo $list[$i]['mb_no'] ?>"><?php echo $list[$i]['mb_title']?></a> </td>
                 <td><a href="#"><?php echo $list[$i]['mb_id'] ?></a> </td>
                 <td><?php echo date("Y-m-d", strtotime($list[$i]['mb_post_datetime'])) ?></td>
                 <td><?php echo $list[$i]['mb_look_number'] ?></td>

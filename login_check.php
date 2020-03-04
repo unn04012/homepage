@@ -81,14 +81,15 @@ $result=mysqli_query($conn, $sql);
 $row = mysqli_fetch_row($result);
 
   if($row[0]==0){ // 오늘 접속날짜 기록이 없으면
-    $sql2 = "INSERT INTO accesslog (ipaddr,date,time,OS,browser,userID,hit,log)
+    $sql = "INSERT INTO accesslog (ipaddr,date,time,OS,browser,userID,hit,log)
               VALUES ('$access_ip','$date','$time','$getOS','$getBrowser','$mb_id','1','1')";
-    $result2=mysqli_query($conn, $sql2);
+    $result=mysqli_query($conn, $sql);
 
   } else { // 접속 기록이 있으면 해당 IP주소의 카운트만 증가시켜라.
     $sql = "UPDATE accessLog SET hit=hit+1 Where ipaddr='$access_ip' AND userID = '$mb_id'";
     $result=mysqli_query($conn, $sql);
   }
+
 
 
 
