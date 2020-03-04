@@ -18,45 +18,29 @@ if(!$mb_title || !$mb_content){
 }
 // if($mb_content)
 
-
+//관리자 업로드//
+if($mb_id == "admin"){
+  $sql = "INSERT INTO admin_notice (ad_title,ad_content, ad_datetime)
+                  VALUES ('$mb_title', '$mb_content', '$mb_post_datetime')";
+  $result = mysqli_query($conn, $sql);
+  if($result){
+    echo "<script> alert('성공적으로 업로드'); <script>";
+    echo "<script> location.replace('./post.php'); <script>";
+    exit;
+  }else{
+    echo "<script> alert('업로드 실패'); <script>";
+    echo "<script> history.back(); <script>";
+    exit;
+  }
+}
 
 $uploads_dir = "../fileupload/fileupload/";
 $allowed_ext = array('jpg','jpeg','png','');
 $field_name = 'myfile';
 
-if(!is_dir($uploads_dir)){
-  if(!mkdir($uploads_dir, 0777)){
-    die("업로드 디렉토리 생성에 실패 했습니다");
-  }
-}
 
 
-if(!isset($_FILES[$field_name])){
-  die("업로드된 파일이 없습니다");
-}
-$error = $_FILES[$field_name]['error'];
-$name = $_FILES[$field_name]['name'];
 
-$upload_file = $uploads_dir.'/'.$name; // 저장될 디렉토리 및 파일명
-$fileinfo = pathinfo($upload_file);   //첨부파일의 정보를 가져옴
-$ext = strtolower($fileinfo['extension']);
-
-$i = 1;
-while(is_file($upload_file)){
-    $name= $fileinfo['filename']."-{$i}.".$fileinfo['extension'];
-    $upload_file = $uploads_dir.'/'.$name;
-    $i++;
-}
-
-if(!in_array($ext, $allowed_ext)){
-  echo  "허용되지 않는 확장자입니다";
-  exit;
-}
-
-if(!move_uploaded_file($_FILES[$field_name]['tmp_name'], $upload_file)){
-    echo "파일이 업로드 되지 않았습니다.";
-    exit;
-}
 $sql = "INSERT INTO notice
                 SET mb_id = '$mb_id',
                     mb_post_datetime = '$mb_post_datetime',
@@ -73,6 +57,39 @@ $result = mysqli_query($conn, $sql);
   $number = $list['mb_no'];
 
 //------------
+if($_FILES[$field_name]['name']){
+  if(!is_dir($uploads_dir)){
+    if(!mkdir($uploads_dir, 0777)){
+      die("업로드 디렉토리 생성에 실패 했습니다");
+    }
+  }
+  if(!isset($_FILES[$field_name])){
+    die("업로드된 파일이 없습니다");
+  }
+  $error = $_FILES[$field_name]['error'];
+  $name = $_FILES[$field_name]['name'];
+
+  $upload_file = $uploads_dir.'/'.$name; // 저장될 디렉토리 및 파일명
+  $fileinfo = pathinfo($upload_file);   //첨부파일의 정보를 가져옴
+  $ext = strtolower($fileinfo['extension']);
+
+  $i = 1;
+  while(is_file($upload_file)){
+      $name= $fileinfo['filename']."-{$i}.".$fileinfo['extension'];
+      $upload_file = $uploads_dir.'/'.$name;
+      $i++;
+  }
+
+  if(!in_array($ext, $allowed_ext)){
+    echo  "허용되지 않는 확장자입니다";
+    exit;
+  }
+
+  if(!move_uploaded_file($_FILES[$field_name]['tmp_name'], $upload_file)){
+      echo "파일이 업로드 되지 않았습니다.";
+      exit;
+  }
+}
 
 $sql = "INSERT INTO upload_file
                 SET file_no = '$number',

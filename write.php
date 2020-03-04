@@ -2,6 +2,25 @@
 include("../login/connect.php");
 include('./multi_login.php');
 include('./auto_logout.php');
+
+$mb_id = $_SESSION['ss_mb_id'];
+$number = $_GET['number'];
+$sql = "SELECT * FROM notice WHERE mb_id = '$mb_id' and mb_no = '$number'";
+$result = mysqli_query($conn, $sql);
+$mb = mysqli_fetch_assoc($result);
+mysqli_close($conn);
+$title = ' ';
+$content = ' ';
+if($_GET['mode']=='modify'){
+  if($_SESSION['ss_mb_id'] == $mb['mb_id']){
+      $mode = "modify";
+      $title = $mb['mb_title'];
+      $content = $mb['mb_content'];
+  }else{
+    echo "<script> alert('글쓴이만 수정 가능합니다'); </script>";
+    echo "<script> history.back(); </script>";
+  }
+}
  ?>
  <!DOCTYPE html>
  <html lang="en" dir="ltr">
@@ -61,11 +80,11 @@ include('./auto_logout.php');
              <table>
                <tr>
                  <th class = "center">제목</th>
-                 <td><input type="text" name="title" value="" class = "title"> </td>
+                 <td><input type="text" name="title" value="<?php echo $title ?>" class = "title"> </td>
                </tr>
                <tr>
                  <th class = "center">내용</td>
-                 <td><textarea name="content" rows="8" cols="80"></textarea> </td>
+                 <td><textarea name="content" rows="8" cols="80"><?php echo $content?></textarea> </td>
                </tr>
                <tr>
                  <th class = "center">파일</th>
