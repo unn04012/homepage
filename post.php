@@ -59,12 +59,21 @@ include('./auto_logout.php');
    </head>
    <body>
      <?php
-     $data = "SELECT mb_no FROM notice";
+     if($_GET['category'] && $_GET['search']){
+       $search = $_GET['search'];
+       $category = $_GET['category'];
+        $data = "SELECT * FROM notice where $category LIKE '%$search%'";
+     }else{
+        $data = "SELECT mb_no FROM notice";
+     }
      $result = mysqli_query($conn, $data);
      $num = mysqli_num_rows($result); // 총 데이터 수
-     $list_page = 10;
+
      $block = 5;
      $page = ($_GET['page'])? $_GET['page'] : 1;
+     $list_page = 10; // sql 끝점
+     $s_point = ($page-1) * $list_page; // sql 시작점
+
 
      $pageNum = ceil($num/$list_page);
      $blockNum = ceil($pageNum/$block);
@@ -78,12 +87,14 @@ include('./auto_logout.php');
 
      $list = array();
 
-     $s_point = ($page-1) * $list_page;
+
      if($_GET['category'] && $_GET['search']){
        $search = $_GET['search'];
        $category = $_GET['category'];
        $sql = "SELECT * FROM notice where $category LIKE '%$search%' ORDER BY mb_no DESC LIMIT $s_point, $list_page ";  //  검색기능
      }else{
+       $search = '';
+       $category = '';
        $sql = "SELECT * FROM notice ORDER BY mb_no DESC LIMIT $s_point, $list_page";    // 게시글 보여주는 sql
      }
      $result = mysqli_query($conn, $sql);
@@ -93,6 +104,7 @@ include('./auto_logout.php');
          break;
        }
      }
+
 
      //관리자 게시판
        $sql = "SELECT * FROM admin_notice";
@@ -154,11 +166,13 @@ include('./auto_logout.php');
          $list_image['file_path'] = "";
        }
 
+       // 사용자 게시판 가져오기
+       $sql = "SELECT * FROM notice WHERE mb_no = $number";
+       $result = mysqli_query($conn, $sql);
+       $list_number = mysqli_fetch_assoc($result);
 
          // 사용자 게시판 가져오기
-         $sql = "SELECT * FROM notice WHERE mb_no = $number";
-         $result = mysqli_query($conn, $sql);
-         $list_number = mysqli_fetch_assoc($result);
+
        ?>
      <div class="content">
        <center>
@@ -208,10 +222,10 @@ include('./auto_logout.php');
            <tr>
              <td colspan = "6">
              <div class="inner_content">
-               <?php echo $list_number['mb_content'] ?>
+               <?php echo $list['mb_content'] ?>
              </div>
                <img src="<?php echo $list_image['file_path'] ?>" alt="" width ="500">
-               <div class="modify"><a href="./write.php?mode=modify&amp;number=<?php echo $list_number['mb_no'] ?>">수정</a></div>
+               <div class="modify"><a href="./write.php?mode=modify&amp;number=<?php echo $list['mb_no'] ?>">수정</a></div>
              </td>
            </tr>
          <?php } ?>
@@ -268,11 +282,11 @@ include('./auto_logout.php');
            </form>
          </div>
          <div class="paging">
-           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">이전</a>
+           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>&amp;number=<?php echo $list['mb_no'] ?>">이전</a>
            <?php for($i=$s_page; $i<=$e_page; $i++){?>
-           <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>&amp;number=<?php echo $list_number['mb_no'] ?>"id ="current_page"><?php echo $i;?></a>
+           <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>&amp;number=<?php echo $list['mb_no'] ?>"id ="current_page"><?php echo $i;?></a>
            <?php } ?>
-           <a href="<?php $PHP_SELF?>?page=<?php echo $e_page+1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">다음</a>
+           <a href="<?php $PHP_SELF?>?page=<?php echo $e_page+1 ?>&amp;number=<?php echo $list['mb_no'] ?>">다음</a>
          </div>
        </center>
      </div>
