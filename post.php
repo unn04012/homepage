@@ -33,11 +33,27 @@ include('./auto_logout.php');
        }
        .write a{
            padding : 5px 10px;
+           border : none;
            border-radius : 10px;
            text-decoration : none;
            color : white;
            background : #34495e;
            font-weight : bold;
+       }
+       .search select, option, input{
+         padding : 5px 10px;
+         border-radius : 10px;
+         text-decoration : none;
+         color : white;
+         background : #34495e;
+         font-weight : bold;
+         margin-bottom : 20px;
+       }
+       .paging a{
+         font-weight : bold;
+       }
+       .search input[type=submit]{
+
        }
      </style>
    </head>
@@ -63,8 +79,14 @@ include('./auto_logout.php');
      $list = array();
 
      $s_point = ($page-1) * $list_page;
-     $sql = "SELECT * FROM notice ORDER BY mb_no DESC LIMIT $s_point, $list_page";
-     $result = mysqlI_query($conn, $sql);
+     if($_GET['category'] && $_GET['search']){
+       $search = $_GET['search'];
+       $category = $_GET['category'];
+       $sql = "SELECT * FROM notice where $category LIKE '%$search%' ORDER BY mb_no DESC LIMIT $s_point, $list_page ";  //  검색기능
+     }else{
+       $sql = "SELECT * FROM notice ORDER BY mb_no DESC LIMIT $s_point, $list_page";    // 게시글 보여주는 sql
+     }
+     $result = mysqli_query($conn, $sql);
      for($i = 0; $row = mysqli_fetch_assoc($result); $i++){
        $list[$i] = $row;
        if($row==false){
@@ -106,8 +128,9 @@ include('./auto_logout.php');
          </label>
        </ul>
      </div>
-     <?php if($_GET['number']) {
-       $number = $_GET['number'];
+     <?php
+     if($_GET['number']) {
+        $number = $_GET['number'];
        if(empty($_COOKIE['board_'.$number])){
          if($number== $admin['mb_no']){
             $sql_increase_look = "UPDATE admin_notice SET mb_look_number = mb_look_number+1";
@@ -217,7 +240,7 @@ include('./auto_logout.php');
             <tbody>
               <tr>
                 <td><?php echo $list[$i]['mb_no'] ?></td>
-                <td><a href="<?php $PHP_SELF ?>?number=<?php echo $list[$i]['mb_no'] ?>"><?php echo $list[$i]['mb_title']?></a> </td>
+                <td><a href="<?php $PHP_SELF ?>?page=<?php echo $page ?>&amp;number=<?php echo $list[$i]['mb_no'] ?>"><?php echo $list[$i]['mb_title']?></a> </td>
                 <td><a href="#"><?php echo $list[$i]['mb_id'] ?></a> </td>
                 <td><?php echo date("Y-m-d", strtotime($list[$i]['mb_post_datetime'])) ?></td>
                 <td><?php echo $list[$i]['mb_look_number'] ?></td>
@@ -233,12 +256,23 @@ include('./auto_logout.php');
             <a href="./login.php">로그인</a>
           <?php } ?>
          </div>
+         <div class="search">
+           <form class="" method="get">
+             <select class="search" name="category">
+               <option value="mb_title">제목</option>
+               <option value="mb_id">글쓴이</option>
+               <option value="mb_post_datetime">날짜</option>
+             </select>
+             <input type="text" name="search" value="">
+             <input type="submit" name="" value="검색">
+           </form>
+         </div>
          <div class="paging">
            <a href="<?php $PHP_SELF?>?page=<?php echo $s_page-1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">이전</a>
            <?php for($i=$s_page; $i<=$e_page; $i++){?>
            <a href="<?php $PHP_SELF ?>?page=<?php echo $i ?>&amp;number=<?php echo $list_number['mb_no'] ?>"id ="current_page"><?php echo $i;?></a>
            <?php } ?>
-           <a href="<?php $PHP_SELF?>?page=<?php echo $s_page+1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">다음</a>
+           <a href="<?php $PHP_SELF?>?page=<?php echo $e_page+1 ?>&amp;number=<?php echo $list_number['mb_no'] ?>">다음</a>
          </div>
        </center>
      </div>
